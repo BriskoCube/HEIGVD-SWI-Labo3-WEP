@@ -3,12 +3,10 @@
 
 """ Manually decrypt a wep message given the WEP key"""
 
-__author__      = "Abraham Rubinstein"
-__copyright__   = "Copyright 2017, HEIG-VD"
-__license__ 	= "GPL"
-__version__ 	= "1.0"
-__email__ 		= "abraham.rubinstein@heig-vd.ch"
-__status__ 		= "Prototype"
+#
+# Autheurs: Julien Quartier et Nathan Séville
+# Date: 23.03.2020
+#
 
 from scapy.all import *
 import zlib
@@ -29,7 +27,7 @@ iv = 123
 # Ici la valeur utilisé par le prmier paquet afin de tester le script
 #message_plain=b'\xaa\xaa\x03\x00\x00\x00\x08\x06\x00\x01\x08\x00\x06\x04\x00\x01\x90\x27\xe4\xea\x61\xf2\xc0\xa8\x01\x64\x00\x00\x00\x00\x00\x00\xc0\xa8\x01\xc8'
 #message_plain = b'ceci est un test de notre script de chiffrement WEP pour SWI    '
-message_plain = b'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+message_plain = b'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 print(f"message en clair(hex): {message_plain.hex()}")
 
 ##
@@ -67,6 +65,10 @@ arp.icv = struct.unpack('!I', message_cipher[-4:])[0]
 
 # Message chiffré au quel on a retiré l'ICV
 arp.wepdata = message_cipher[:-4]
+
+# La taille doit être recalculée
+arp[RadioTap].len = None
+
 
 print(arp.len)
 
