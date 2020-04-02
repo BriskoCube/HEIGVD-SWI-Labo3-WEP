@@ -27,7 +27,7 @@ iv = 123
 # Ici la valeur utilisé par le prmier paquet afin de tester le script
 #message_plain=b'\xaa\xaa\x03\x00\x00\x00\x08\x06\x00\x01\x08\x00\x06\x04\x00\x01\x90\x27\xe4\xea\x61\xf2\xc0\xa8\x01\x64\x00\x00\x00\x00\x00\x00\xc0\xa8\x01\xc8'
 #message_plain = b'ceci est un test de notre script de chiffrement WEP pour SWI    '
-message_plain = b'wepencryptedmessagewithfragmentationan wepencryptedmessagewithfragmentationan wepencryptedmessagewithfragmentationan'
+message_plain = b'wepencryptedmessagewithfragmentationan'
 print(f"message en clair(hex): {message_plain.hex()}")
 
 ##
