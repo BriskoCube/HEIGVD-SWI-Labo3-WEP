@@ -27,7 +27,7 @@ iv = 123
 # Ici la valeur utilisé par le prmier paquet afin de tester le script
 #message_plain=b'\xaa\xaa\x03\x00\x00\x00\x08\x06\x00\x01\x08\x00\x06\x04\x00\x01\x90\x27\xe4\xea\x61\xf2\xc0\xa8\x01\x64\x00\x00\x00\x00\x00\x00\xc0\xa8\x01\xc8'
 #message_plain = b'ceci est un test de notre script de chiffrement WEP pour SWI    '
-message_plain = b'wepencryptedmessagewithfragmentationan'
+message_plain = b'wepencryptedmessagewithfragmentationan wepencryptedmessagewithfragmentationan wepencryptedmessagewithfragmentationan'
 print(f"message en clair(hex): {message_plain.hex()}")
 
 ##
@@ -47,7 +47,10 @@ def split(a, n):
     k, m = divmod(len(a), n)
     return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n))
 
-messages = list(split(message_plain, 3))
+
+fragment_count = 3
+
+messages = list(split(message_plain, fragment_count))
 
 # Tableau pour nos fragments
 arps = []
@@ -55,7 +58,7 @@ arps = []
 # Création du stream RC4 utilisé pour chiffrer
 cipher = RC4(seed, streaming=False)
 
-for i in range(0, 3):
+for i in range(0, fragment_count):
     # Le paquet fourni est utilisé comme framework
     arp = rdpcap('arp.cap')[0]
 
@@ -76,7 +79,7 @@ for i in range(0, 3):
     arp.SC = i
 
     # Bit more fragment
-    if i != 2:
+    if i < fragment_count - 1:
         arp.FCfield = 0x04 | arp.FCfield
 
     # Conversion de l'ICV chiffré en int
